@@ -1,26 +1,26 @@
 package runtimex
 
 import (
-	"log"
-	"runtime/debug"
-
-	"github.com/kom0055/go-runtimex/langx/bytesconv"
+	"context"
 )
 
 func GoRoutine(method func()) {
 	if method == nil {
 		return
 	}
-	go func() {
-		defer Guard()
+	Go(context.Background(), func(ctx context.Context) {
 		method()
-	}()
+	})
 
 }
 
-func Guard() {
-	if r := recover(); r != nil {
-		log.Printf("recover panic: %v,  stack: %v\r\n",
-			r, bytesconv.BytesToString(debug.Stack()))
+func Go(ctx context.Context, method func(context.Context), additionalHandlers ...func(context.Context, any)) {
+	if method == nil {
+		return
 	}
+	go func() {
+		defer HandleCrash(ctx, additionalHandlers...)
+		method(ctx)
+	}()
+
 }
