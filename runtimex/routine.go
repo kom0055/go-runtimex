@@ -14,7 +14,7 @@ func GoRoutine(method func()) {
 
 }
 
-func Go(ctx context.Context, method func(context.Context), additionalHandlers ...func(context.Context, any)) {
+func Go(ctx context.Context, method func(context.Context), additionalHandlers ...func(context.Context, error)) {
 	if method == nil {
 		return
 	}
