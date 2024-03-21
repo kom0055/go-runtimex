@@ -50,7 +50,8 @@ func logPanic(ctx context.Context, err error) {
 	//}
 
 	if l := logger; l != nil {
-		l(ctx, "panic happened, cause: %+v", err)
+		l(ctx, "panic happened, cause: %v", err)
+		l(ctx, "panic happened, stack: %+v", err)
 	}
 }
 
